@@ -1,0 +1,7 @@
+{
+  "syntax_override": {
+    "\\.js$": ["JavaScript (Babel)"],
+    "\\.sublime-project": ["JSON"],
+    "\\.eslintrc": ["JSON"]
+  }
+}
