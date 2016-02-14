@@ -3,12 +3,14 @@ import tornado.httpserver
 import tornado.ioloop
 
 from src.config import PORT
-from src.handlers import MainHandler, StaticFileHandler
+from src.handlers import APIHandler, MainHandler, StaticFileHandler
+
 
 def application():
   return tornado.web.Application(
     [
       (r'/(.*\.(?:css|js))', StaticFileHandler, {'path': './build/dist/'}),
+      (r'/api/v1(/.*)', APIHandler),
       (r'(/.*)', MainHandler)
     ],
     debug=True,
