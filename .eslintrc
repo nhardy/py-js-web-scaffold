@@ -3,5 +3,9 @@
   "parser": "babel-eslint",
   "ecmaFeatures": {
     "classes": true
+  },
+  "rules": {
+    "arrow-body-style": 0,
+    "no-param-reassign": [2, {"props": false}]
   }
 }

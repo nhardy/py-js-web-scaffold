@@ -1,6 +1,7 @@
 import path from 'path';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { DefinePlugin } from 'webpack';
-import appConfig, { SRC_PATH } from './app';
+import appConfig, { BUILD_PATH, SRC_PATH } from './app';
 
 export default {
   ...appConfig,
@@ -19,11 +20,16 @@ export default {
   },
 
   plugins: [
-    ...appConfig.plugins,
+    new ExtractTextPlugin('bundle-[contenthash:base64:5].css', {
+      allChunks: true,
+    }),
     new DefinePlugin({
+      BUILD_PATH: JSON.stringify(BUILD_PATH),
+      fs: 'require("fs")',
+      path: 'require("path")',
       'process.argv': 'process.argv',
       'process.env': {
-        NODE_ENV: '"production"',
+        NODE_ENV: JSON.stringify('production'),
       },
       'process.exit': 'process.exit',
     }),

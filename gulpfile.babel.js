@@ -16,22 +16,22 @@ const paths = {
   python: ['server.py', '__init__.py', 'src/**/*.py', '!**/__pycache__/', '!**/*.py[cod]'],
   js: ['src/js/**/*.js'],
   assets: ['src/**/*.styl', 'src/**/*.*(svg|png|jpg)'],
-  webpack: ['webpack.config.babel.js'],
+  webpack: ['webpack/**/*'],
   gulp: ['gulpfile.babel.js'],
 };
 
 gulp.task('clean', (done) => {
-  del.sync(paths.build + paths.pycache);
+  del.sync([].concat(paths.build, paths.pycache));
   done();
 });
 
 gulp.task('webpack-server', (done) => {
-  runSequence('clean');
   webpack(serverConfig, (error, stats) => {
     if (error) throw new gutil.PluginError('webpack-server', error);
 
     gutil.log('[webpack-server]', stats.toString({
       colors: true,
+      chunkModules: false,
     }));
 
     done();
@@ -39,12 +39,12 @@ gulp.task('webpack-server', (done) => {
 });
 
 gulp.task('webpack-client', (done) => {
-  runSequence('clean');
   webpack(clientConfig, (error, stats) => {
     if (error) throw new gutil.PluginError('webpack-client', error);
 
     gutil.log('[webpack-client]', stats.toString({
       colors: true,
+      chunkModules: false,
     }));
 
     done();
@@ -64,7 +64,7 @@ gulp.task('server', (done) => {
 });
 
 gulp.task('watch', () => {
-  gulp.watch(paths.stylus + paths.js + paths.webpack, ['webpack-server', 'webpack-client', 'server']);
+  gulp.watch([].concat(paths.assets, paths.js, paths.webpack), ['webpack-server', 'webpack-client', 'server']);
   gulp.watch(paths.python, ['server']);
 });
 

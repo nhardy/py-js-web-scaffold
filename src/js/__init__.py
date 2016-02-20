@@ -7,8 +7,8 @@ from src.config import BUILD_PATH
 
 class NodeException(Exception):
   def __init__(self, message, stderr, stdout):
-    _message = '{}\nNode STDERR:\n{}'.format(message, stderr)
-    super(NodeException, self).__init__(_message)
+    _message = '{}\nNode STDERR:\n{}\nNode STDOUT:\n{}'.format(message, stderr, stdout)
+    super().__init__(_message)
 
     self.stderr = stderr
     self.stdout = stdout
@@ -34,7 +34,10 @@ class ServerResponse:
   @stdout.setter
   def stdout(self, value):
     self._stdout = value.decode('utf-8')
-    self._message = json.loads(self._stdout.split('\n')[-2])
+    try:
+      self._message = json.loads(self._stdout.split('\n')[-2])
+    except json.decode.JSONDecodeError:
+      raise NodeException('An exception occurred whilst parsing the output from Node. See debug info below.', self.stderr, self.stdout)
 
   @property
   def body(self):
@@ -55,7 +58,7 @@ def request(path):
   res = muterun_js(server_bundle, '--path={}'.format(safe_path))
 
   if res.exitcode != 0:
-    raise NodeException('An Error Ocurred', res.stderr.decode('utf-8'), res.stdout.decode('utf-8'))
+    raise NodeException('An exception occurred within the Node application. See debug info below.', res.stderr.decode('utf-8'), res.stdout.decode('utf-8'))
 
   server_response = ServerResponse()
   server_response.stderr = res.stderr

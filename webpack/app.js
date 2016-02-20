@@ -35,15 +35,10 @@ export default {
     ],
   },
 
-  plugins: [
-    new ExtractTextPlugin('dist/bundle.css', {
-      allChunks: true,
-    }),
-  ],
-
   resolve: {
     alias: {
       app: path.resolve(JS_PATH, 'app'),
+      server: path.resolve(JS_PATH, 'server'),
     },
     extensions: ['', '.json', '.js'],
     modulesDirectories: [

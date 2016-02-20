@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
+import stats from 'server/stats';
 
 
 export default class Html extends Component {
@@ -23,12 +24,12 @@ export default class Html extends Component {
           {head.link.toComponent()}
           {head.script.toComponent()}
           <meta httpEquiv="Content-Type" value="text/html; charset='utf-8'" />
-          <link rel="stylesheet" type="text/css" href="/bundle.css" />
+          <link rel="stylesheet" type="text/css" href={`/${stats.cssBundle}`} />
         </head>
         <body>
           <div id="root" dangerouslySetInnerHTML={{ __html: content }}/>
           <script dangerouslySetInnerHTML={{ __html: `window.__data=${JSON.stringify(store.getState())};` }} />
-          <script src="/bundle.js" />
+          <script src={`/${stats.jsBundle}`} />
         </body>
       </html>
     );
