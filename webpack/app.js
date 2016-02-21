@@ -18,12 +18,18 @@ export default {
     publicPath: 'http://localhost:8080/',
   },
 
+  devtool: 'source-map',
+
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader?sourceMaps=inline',
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
       },
       {
         test: /\.styl$/,

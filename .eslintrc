@@ -7,5 +7,9 @@
   "rules": {
     "arrow-body-style": 0,
     "no-param-reassign": [2, {"props": false}]
+  },
+  "globals": {
+    "__SERVER__": false,
+    "__CLIENT__": false,
   }
 }

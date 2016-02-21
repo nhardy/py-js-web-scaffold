@@ -1,7 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { getPathname } from 'app/lib/routing';
 
 import styles from './styles.styl';
 
+@connect(state => {
+  const pathname = getPathname(state);
+  return {
+    ...state.pages[pathname].data.header,
+  };
+})
 export default class Header extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,

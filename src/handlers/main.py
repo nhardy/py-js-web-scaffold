@@ -1,15 +1,16 @@
 import tornado.web
+import tornado.gen
 
 from src.js import NodeException, request
 
 
 class MainHandler(tornado.web.RequestHandler):
-  def get(self, path):
+  async def get(self, path):
     try:
-      response = request(path)
+      response = await request(path)
     except NodeException:
       try:
-        response = request('/__server_error')
+        response = await request('/__server_error')
       except NodeException:
         raise tornado.web.HTTPError(500)
 

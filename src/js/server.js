@@ -38,7 +38,7 @@ match({
 
     output(`<!DOCTYPE html>\n${html}`);
   }).catch((err) => {
-    console.error(err.stack || err);
+    console.error(err.stack || err); // eslint-disable-line no-console
     throw err;
   });
 });

@@ -1,5 +1,7 @@
 import json
 import shlex
+import tornado.gen
+from concurrent.futures import ProcessPoolExecutor
 from Naked.toolshed.shell import muterun_js
 
 from src.config import BUILD_PATH
@@ -36,7 +38,7 @@ class ServerResponse:
     self._stdout = value.decode('utf-8')
     try:
       self._message = json.loads(self._stdout.split('\n')[-2])
-    except json.decode.JSONDecodeError:
+    except json.decoder.JSONDecodeError:
       raise NodeException('An exception occurred whilst parsing the output from Node. See debug info below.', self.stderr, self.stdout)
 
   @property
@@ -51,11 +53,14 @@ class ServerResponse:
   def error(self):
     return self._message['error']
 
+@tornado.gen.coroutine
 def request(path):
   server_bundle = str(BUILD_PATH / 'server.js')
   safe_path = shlex.quote(path)
 
-  res = muterun_js(server_bundle, '--path={}'.format(safe_path))
+  pool = ProcessPoolExecutor(max_workers=1)
+
+  res = yield pool.submit(muterun_js, server_bundle, '--path={}'.format(safe_path))
 
   if res.exitcode != 0:
     raise NodeException('An exception occurred within the Node application. See debug info below.', res.stderr.decode('utf-8'), res.stdout.decode('utf-8'))
@@ -63,5 +68,7 @@ def request(path):
   server_response = ServerResponse()
   server_response.stderr = res.stderr
   server_response.stdout = res.stdout
+
+  pool.shutdown()
 
   return server_response

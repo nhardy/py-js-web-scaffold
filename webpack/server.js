@@ -1,4 +1,5 @@
 import path from 'path';
+import { BannerPlugin } from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { DefinePlugin } from 'webpack';
 import appConfig, { BUILD_PATH, SRC_PATH } from './app';
@@ -13,10 +14,16 @@ export default {
     filename: 'server.js',
   },
 
+  target: 'node',
+
   node: {
     child_process: 'empty',
-    fs: 'empty',
     process: 'empty',
+  },
+
+  externals: {
+    axios: 'require("axios")',
+    debug: 'require("debug")',
   },
 
   plugins: [
@@ -24,14 +31,18 @@ export default {
       allChunks: true,
     }),
     new DefinePlugin({
+      __CLIENT__: 'false',
+      __SERVER__: 'true',
       BUILD_PATH: JSON.stringify(BUILD_PATH),
-      fs: 'require("fs")',
-      path: 'require("path")',
       'process.argv': 'process.argv',
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
       },
       'process.exit': 'process.exit',
+    }),
+    new BannerPlugin('require("source-map-support").install();', {
+      raw: true,
+      entryOnly: false,
     }),
   ],
 };

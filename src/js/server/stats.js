@@ -1,4 +1,8 @@
-/* global BUILD_PATH, path, fs */
+/* global BUILD_PATH */
+
+import fs from 'fs';
+import path from 'path';
+
 
 const STATS_PATH = path.resolve(BUILD_PATH, 'webpackStats.json');
 const rawStats = JSON.parse(fs.readFileSync(STATS_PATH));
