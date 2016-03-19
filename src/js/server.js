@@ -22,10 +22,12 @@ match({
   location: argv.path,
 }, (error, redirectLocation, renderProps) => {
   if (redirectLocation) {
-    return console.error('SHOULD NOT REDIRECT'); // eslint-disable-line no-console
+    console.error('SHOULD NOT REDIRECT'); // eslint-disable-line no-console
+    return;
   }
   if (error) {
-    return console.error('ROUTER ERROR:', error); // eslint-disable-line no-console
+    console.error('ROUTER ERROR:', error); // eslint-disable-line no-console
+    return;
   }
   loadOnServer(renderProps, store).then(() => {
     const component = (

@@ -10,10 +10,11 @@ const mountPoint = document.getElementById('root');
 const store = createStore(getRoutes, browserHistory, window.__data);
 
 const component = (
-  <Router render={props => // eslint-disable-line react/jsx-no-bind
+  <Router
+    render={props => // eslint-disable-line react/jsx-no-bind
       <ReduxAsyncConnect {...props} />
-    } history={browserHistory}
-  >
+    }
+    history={browserHistory}>
     {getRoutes(store)}
   </Router>
 );

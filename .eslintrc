@@ -1,15 +1,3 @@
 {
-  "extends": "airbnb",
-  "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "classes": true
-  },
-  "rules": {
-    "arrow-body-style": 0,
-    "no-param-reassign": [2, {"props": false}]
-  },
-  "globals": {
-    "__SERVER__": false,
-    "__CLIENT__": false,
-  }
+  "extends": "eslint-config-nhardy",
 }

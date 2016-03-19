@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import stats from 'server/stats';
 
 
-export default class Html extends Component {
+export default class Html extends Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     component: PropTypes.node,
     store: PropTypes.object,
@@ -27,8 +27,11 @@ export default class Html extends Component {
           <link rel="stylesheet" type="text/css" href={`/${stats.cssBundle}`} />
         </head>
         <body>
-          <div id="root" dangerouslySetInnerHTML={{ __html: content }}/>
-          <script dangerouslySetInnerHTML={{ __html: `window.__data=${JSON.stringify(store.getState())};` }} />
+          <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__data=${JSON.stringify(store.getState())};`,
+            }} />
           <script src={`/${stats.jsBundle}`} />
         </body>
       </html>

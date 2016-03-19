@@ -4,13 +4,14 @@ import { getPathname } from 'app/lib/routing';
 
 import styles from './styles.styl';
 
+
 @connect(state => {
   const pathname = getPathname(state);
   return {
     ...state.pages[pathname].data.header,
   };
 })
-export default class Header extends Component {
+export default class Header extends Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     title: PropTypes.string.isRequired,
     tagline: PropTypes.string.isRequired,

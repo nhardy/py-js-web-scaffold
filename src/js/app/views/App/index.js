@@ -6,6 +6,7 @@ import Helmet from 'react-helmet';
 import { getPathname } from 'app/lib/routing';
 import { fetchPageData } from 'app/actions/fetchPageData';
 import Header from 'app/components/Header';
+import Footer from 'app/components/Footer';
 
 @asyncConnect({
   promise: (params, { store: { dispatch, getState } }) => {
@@ -26,7 +27,7 @@ import Header from 'app/components/Header';
     title: state.pages[pathname].data.meta.title,
   };
 })
-export default class App extends Component {
+export default class App extends Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     children: PropTypes.node,
     title: PropTypes.string,
@@ -40,6 +41,7 @@ export default class App extends Component {
         <Helmet title={title} />
         <Header />
         { this.props.children }
+        <Footer />
       </div>
     );
   }
